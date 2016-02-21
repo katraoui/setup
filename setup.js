@@ -1,5 +1,7 @@
+var fs= require('fs');
+var cp = require('child_process');
 module.exports = function(){
-	
+
 	var obj = {
 		network: {},
 		hostname: {},
@@ -10,18 +12,18 @@ module.exports = function(){
 
 	// Hostname
 	obj.hostname.save = function(hostname,outFile){
-		require('fs').writeFileSync(outFile || '/etc/hostname', hostname);
+		fs.writeFileSync(outFile || '/etc/hostname', hostname);
 	}
 
 	// Hosts
 	obj.hosts.save = function(config,outFile){
-		require('fs').writeFileSync(outFile || '/etc/hosts', config);
+		fs.writeFileSync(outFile || '/etc/hosts', config);
 	}
-	
+
 	obj.hosts.config = function(hosts) {
 
 		var output =[];
-		var hostName = require('fs').readFileSync('/etc/hostname','UTF-8').trim();
+		var hostName = fs.readFileSync('/etc/hostname','UTF-8').trim();
 
 		output.push('127.0.0.1	localhost');
 		output.push('127.0.0.1	'+hostName);
@@ -39,7 +41,7 @@ module.exports = function(){
 
 	// Date/Time
 	obj.clock.set = function(time) {
-		require('child_process').exec('date -s "'+time+'" ; hwclock --systohc;', cb);
+		cp.exec('date -s "'+time+'" ; hwclock --systohc;', cb);
 	}
 
 
@@ -47,10 +49,10 @@ module.exports = function(){
 
 	// Networking
 	obj.network.restart = function(cb){
-		require('child_process').exec('/etc/init.d/networking restart', cb);
+		cp.exec('/etc/init.d/networking restart', cb);
 	}
 	obj.network.save = function(config,outFile){
-		require('fs').writeFileSync(outFile || '/etc/network/interfaces', config);
+		fs.writeFileSync(outFile || '/etc/network/interfaces', config);
 	}
 	obj.network.config = function(config){
 
@@ -74,7 +76,7 @@ module.exports = function(){
 
 			if (config[device].wireless)
 			{
-				if (config[device].wireless.ssid)				
+				if (config[device].wireless.ssid)
 					output.push('  wpa-ssid '+config[device].wireless.ssid)
 
 				if (config[device].wireless.psk)
@@ -93,7 +95,7 @@ module.exports = function(){
 					output.push('gateway '+config[device].ipv4.gateway)
 
 				if (config[device].ipv4.dns)
-					output.push('dns-nameservers '+config[device].ipv4.dns)								
+					output.push('dns-nameservers '+config[device].ipv4.dns)
 			}
 
 		}

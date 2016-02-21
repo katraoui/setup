@@ -8,22 +8,26 @@ module.exports = function(){
 		hosts: {},
 		crontab: {},
 		clock: {},
+		path: {}
 	};
 
+	obj.path.HOSTNAME = '/etc/hostname';
+	obj.path.HOSTS = '/etc/hosts';
+	obj.path.INTERFACES_FILE = '/etc/network/interfaces'
 	// Hostname
 	obj.hostname.save = function(hostname,outFile){
-		fs.writeFileSync(outFile || '/etc/hostname', hostname);
+		fs.writeFileSync(outFile || obj.path.HOSTNAME, hostname);
 	}
 
 	// Hosts
 	obj.hosts.save = function(config,outFile){
-		fs.writeFileSync(outFile || '/etc/hosts', config);
+		fs.writeFileSync(outFile || obj.path.HOSTS, config);
 	}
 
 	obj.hosts.config = function(hosts) {
 
 		var output =[];
-		var hostName = fs.readFileSync('/etc/hostname','UTF-8').trim();
+		var hostName = fs.readFileSync(obj.path.HOSTNAME,'UTF-8').trim();
 
 		output.push('127.0.0.1	localhost');
 		output.push('127.0.0.1	'+hostName);
@@ -52,7 +56,7 @@ module.exports = function(){
 		cp.exec('/etc/init.d/networking restart', cb);
 	}
 	obj.network.save = function(config,outFile){
-		fs.writeFileSync(outFile || '/etc/network/interfaces', config);
+		fs.writeFileSync(outFile || obj.path.INTERFACES_FILE, config);
 	}
 	obj.network.config = function(config){
 

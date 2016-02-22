@@ -128,14 +128,14 @@ module.exports = function(){
 	}
 
 	obj.system.brightness_inc= function(cb){
-		var data = readFileSync('/sys/class/backlight/acpi_video0/brightness');
+		var data = fs.readFileSync('/sys/class/backlight/acpi_video0/brightness');
 		var value = parseInt(data)++;
 		if(value >15)
 			value =15;
 		cp.exec('tee /sys/class/backlight/acpi_video0/brightness <<< '+ value, cb);
 	}
 	obj.system.brightness_dec= function(cb){
-		var data = readFileSync('/sys/class/backlight/acpi_video0/brightness');
+		var data = fs.readFileSync('/sys/class/backlight/acpi_video0/brightness');
 		var value = parseInt(data)--;
 		if(value <0)
 			value =0;

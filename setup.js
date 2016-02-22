@@ -8,7 +8,8 @@ module.exports = function(){
 		hosts: {},
 		crontab: {},
 		clock: {},
-		path: {}
+		path: {},
+		system : {}
 	};
 
 	obj.path.HOSTNAME = '/etc/hostname';
@@ -107,6 +108,24 @@ module.exports = function(){
 		return output.join("\n");
 	}
 
+
+
+	// SYSTEM
+
+	obj.system.reboot= function(cb){
+		cp.exec('shutdown -r now', cb);
+	}
+
+	obj.system.ntpdate=function(cb){
+		cp.exec('ntpdate-debian',cb);
+	}
+
+	obj.system.uuid = function(cb){
+		cp.exec('cat /sys/class/dmi/id/product_uuid',cb);
+	}
+	obj.system.boardSerial=function(cb){
+		cp.exec('cat /sys/class/dmi/id/board_serial', cb);
+	}
 
 
 	return obj;

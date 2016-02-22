@@ -141,6 +141,26 @@ module.exports = function(){
 			value =0;
 		cp.exec('tee /sys/class/backlight/acpi_video0/brightness <<< '+ value, cb);
 	}
+	obj.system.sound_inc= function(cb){
+		cp.exec('pactl set-sink-volume 0 +15%', cb);
+	}
+	obj.system.sound_dec= function(cb){
+		cp.exec('pactl set-sink-volume 0 -15%', cb);
+	}
+	// obj.system.sound_inc= function(cb){
+	// 	cp.exec('amixer -q sset Master 5%+', cb);
+	// }
+	// obj.system.sound_dec= function(cb){
+	// 	cp.exec('amixer -q sset Master 5%-', cb);
+	// }
+
+	//mute/unmute
+	obj.system.sound_mute_toggle= function(){
+		cp.exec('pactl set-sink-mute 0 toggle', cb);
+	}
+	// obj.system.sound_mute_toggle= function(){
+	// 	cp.exec('amixer -q sset Master toggle', cb);
+	// }
 
 	return obj;
 }

@@ -1,3 +1,5 @@
+'use strict'
+
 var fs= require('fs');
 var cp = require('child_process');
 module.exports = function(){
@@ -11,6 +13,9 @@ module.exports = function(){
 		path: {},
 		system : {}
 	};
+
+
+
 
 	obj.path.HOSTNAME = '/etc/hostname';
 	obj.path.HOSTS = '/etc/hosts';
@@ -129,9 +134,10 @@ module.exports = function(){
 
 	obj.system.brightness_inc= function(cb){
 		var data = fs.readFileSync('/sys/class/backlight/acpi_video0/brightness','utf8');
-		var value = parseInt(data,10);
-		if(value <15)
+		var value = parseInt(data);
+		if(value <15){
 			value++;
+		}
 		cp.exec('tee /sys/class/backlight/acpi_video0/brightness <<< '+ value, cb);
 	}
 	obj.system.brightness_dec= function(cb){
@@ -153,7 +159,11 @@ module.exports = function(){
 	// obj.system.sound_dec= function(cb){
 	// 	cp.exec('amixer -q sset Master 5%-', cb);
 	// }
+	obj.system.sound_get=function(cb){
+		console.log('volume : ', _state.volume);
 
+		cp.exec("pactl list sinks | grep  Volume: | awk '$1 ~ /Volume/ { print $5,$12 }'",cb);
+	}
 	//mute/unmute
 	obj.system.sound_mute_toggle= function(){
 		cp.exec('pactl set-sink-mute 0 toggle', cb);
@@ -161,6 +171,7 @@ module.exports = function(){
 	// obj.system.sound_mute_toggle= function(){
 	// 	cp.exec('amixer -q sset Master toggle', cb);
 	// }
+
 
 	return obj;
 }

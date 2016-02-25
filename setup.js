@@ -2,6 +2,7 @@
 
 var fs= require('fs');
 var cp = require('child_process');
+// var interfaces = require('./interfaces');
 module.exports = function(){
 
 	var obj = {
@@ -15,7 +16,7 @@ module.exports = function(){
 	};
 
 
-
+//----------------------------------------------------------------------------
 
 	obj.path.HOSTNAME = '/etc/hostname';
 	obj.path.HOSTS = '/etc/hosts';
@@ -24,7 +25,7 @@ module.exports = function(){
 	obj.hostname.save = function(hostname,outFile){
 		fs.writeFileSync(outFile || obj.path.HOSTNAME, hostname);
 	}
-
+//----------------------------------------------------------------------------
 	// Hosts
 	obj.hosts.save = function(config,outFile){
 		fs.writeFileSync(outFile || obj.path.HOSTS, config);
@@ -46,7 +47,7 @@ module.exports = function(){
 	}
 
 
-
+//----------------------------------------------------------------------------
 
 
 	// Date/Time
@@ -56,7 +57,7 @@ module.exports = function(){
 
 
 
-
+//----------------------------------------------------------------------------
 	// Networking
 	obj.network.restart = function(cb){
 		cp.exec('/etc/init.d/networking restart', cb);
@@ -70,9 +71,9 @@ module.exports = function(){
 
 		output.push('auto lo')
 		output.push('iface lo inet loopback')
+		console.log(config);
 
-
-		for (device in config)
+		for (var device in config)
 		{
 			output.push('')
 
@@ -113,7 +114,16 @@ module.exports = function(){
 		return output.join("\n");
 	}
 
+	// obj.network.get=function(cb){
+	//
+	// }
+	//
 
+
+
+
+
+//----------------------------------------------------------------------------
 
 	// SYSTEM
 

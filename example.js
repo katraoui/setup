@@ -1,7 +1,7 @@
-var setup = require('./setup.js')();
+var setup = require('./setup')();
+// console.log(setup);
 
-var config = setup.network.config({
-
+var X = {
 	wlan0: {
 		auto: true, // start at Boot
 		dhcp: true, // Use DHCP
@@ -19,19 +19,20 @@ var config = setup.network.config({
 			dns: '8.8.8.8'
 		}
 	}
-});
+};
+var config = setup.network.config(X);
 
-setup.network.save(config, './network.txt');
-
-
-
-setup.hostname.save('hello.com', './hostname.txt');
+// setup.network.save(config, './network.txt');
 
 
-var hosts = setup.hosts.config({ 
-	'10.0.0.1':'server1.example.com', 
-	'10.0.0.2':'server2.example.com'
-});
 
-setup.hosts.save(hosts, './hosts.txt');
+// setup.hostname.save('hello.com', './hostname.txt');
 
+
+// var hosts = setup.hosts.config({
+// 	'10.0.0.1':'server1.example.com',
+// 	'10.0.0.2':'server2.example.com'
+// });
+//
+// setup.hosts.save(hosts, './hosts.txt');
+//

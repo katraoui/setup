@@ -1,14 +1,25 @@
 {
   "name": "setup",
   "description": "A server config utility for nodejs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Hugo Rodrigues <correio@hugorodrigues.com>",
   "homepage": "https://github.com/hugorodrigues/setup",
   "repository": {
     "type": "git",
     "url": "https://hugorodrigues@github.com/hugorodrigues/setup.git"
   },
-  "keywords": ["sysadmin", "devops", "network", "setup", "hostname", "wireless", "dns", "hostname"],
+  "keywords": [
+    "sysadmin",
+    "devops",
+    "network",
+    "setup",
+    "hostname",
+    "wireless",
+    "dns",
+    "hostname"
+  ],
   "main": "./setup.js",
-  "dependencies": {}
+  "dependencies": {
+
+  }
 }

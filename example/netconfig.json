@@ -1,0 +1,72 @@
+{
+  "eth0": {
+    "auto": true,
+    "dhcp": true,
+    "mtu": "1500",
+    "state": "DOWN",
+    "group": "default",
+    "proto": "ether",
+    "MAC": "5c:26:0a:67:ea:e1"
+  },
+  "wlan0": {
+    "auto": true,
+    "dhcp": true,
+    "mtu": "1500",
+    "state": "UP",
+    "group": "default",
+    "proto": "ether",
+    "MAC": "a0:88:b4:65:bd:20",
+    "wireless": {
+      "ssid": "myWirelessName",
+      "psk": "mySuperPassword"
+    }
+  },
+  "vmnet1": {
+    "auto": true,
+    "dhcp": true,
+    "mtu": "1500",
+    "state": "DOWN",
+    "group": "default",
+    "proto": "ether",
+    "MAC": "00:50:56:c0:00:01"
+  },
+  "vmnet8": {
+    "mtu": "1500",
+    "state": "DOWN",
+    "group": "default",
+    "proto": "ether",
+    "MAC": "00:50:56:c0:00:08"
+  },
+  "virbr0": {
+    "auto": true,
+    "dhcp": false,
+    "mtu": "1500",
+    "state": "DOWN",
+    "group": "default",
+    "proto": "ether",
+    "MAC": "52:54:00:47:35:5d",
+    "ipv4": {
+      "address": "192.168.122.1",
+      "prefix": "24",
+      "netmask": "255.255.255.0"
+    }
+  },
+  "virbr0-nic": {
+    "auto": true,
+    "dhcp": false,
+    "mtu": "1500",
+    "state": "DOWN",
+    "group": "default",
+    "proto": "ether",
+    "MAC": "52:54:00:47:35:5d"
+  },
+  "vboxnet0": {
+    "auto": true,
+    "dhcp": false,
+    "mtu": "1500",
+    "state": "DOWN",
+    "group": "default",
+    "proto": "ether",
+    "MAC": "0a:00:27:00:00:00"
+  }
+}

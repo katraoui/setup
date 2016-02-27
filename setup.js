@@ -2,7 +2,7 @@
 
 var fs= require('fs');
 var cp = require('child_process');
-// var interfaces = require('./interfaces');
+// var interfaces = require('./interfaces')(cp);
 module.exports = function(){
 
 	var obj = {
@@ -21,6 +21,8 @@ module.exports = function(){
 	obj.path.HOSTNAME = '/etc/hostname';
 	obj.path.HOSTS = '/etc/hosts';
 	obj.path.INTERFACES_FILE = '/etc/network/interfaces'
+	obj.path.NETWORK_CONFIG_FILE = '/root/network/netconfig.json';
+	obj.path.NETWORK_CONFIG_FILE_CURRENT='/root/network/netconfig_current.json';
 	// Hostname
 	obj.hostname.save = function(hostname,outFile){
 		fs.writeFileSync(outFile || obj.path.HOSTNAME, hostname);
@@ -62,16 +64,29 @@ module.exports = function(){
 	obj.network.restart = function(cb){
 		cp.exec('/etc/init.d/networking restart', cb);
 	}
-	obj.network.save = function(config,outFile){
-		fs.writeFileSync(outFile || obj.path.INTERFACES_FILE, config);
+
+
+	obj.network.reset = function(){
+		var conf = fs.readFileSync(obj.path.NETWORK_CONFIG_FILE);
+		fs.writeFileSync(obj.path.NETWORK_CONFIG_FILE_CURRENT,conf);
+		// fs.linkSync(obj.path.NETWORK_CONFIG_FILE,obj.path.NETWORK_CONFIG_FILE_CURRENT);
+		obj.network.apply();
+		//TODO : Restar network ???
 	}
-	obj.network.config = function(config){
+	obj.network.setConfig = function(config,outFile){
+		//TODO : Validate
+		fs.writeFileSync(outFile || obj.path.NETWORK_CONFIG_FILE_CURRENT, JSON.stringify(config));
+	}
+	obj.network.apply = function(){
+		var config = JSON.parse(fs.readFileSync(obj.path.NETWORK_CONFIG_FILE_CURRENT));
+
+		//TODO : Validate
 
 		var output= [];
 
 		output.push('auto lo')
 		output.push('iface lo inet loopback')
-		console.log(config);
+		// console.log(config);
 
 		for (var device in config)
 		{
@@ -105,20 +120,23 @@ module.exports = function(){
 				if (config[device].ipv4.gateway)
 					output.push('gateway '+config[device].ipv4.gateway)
 
-				if (config[device].ipv4.dns)
-					output.push('dns-nameservers '+config[device].ipv4.dns)
+				if (config[device].ipv4.dns){
+					output.push('dns-nameservers '+config[device].ipv4.dns.join(' '));
+
+				}
 			}
 
 		}
-
-		return output.join("\n");
+		fs.writeFileSync(obj.path.INTERFACES_FILE,output.join("\n"))
+		// return output.join("\n");
+		return config;
 	}
 
-	// obj.network.get=function(cb){
-	//
-	// }
-	//
-
+	obj.network.getConfig=function(cb){
+		// console.log('obj.network.get',interfaces.getInfo );
+		//interfaces.getInfo(cb);
+		cb(null,JSON.parse(fs.readFileSync(obj.path.NETWORK_CONFIG_FILE_CURRENT,'UTF-8')));
+	}
 
 
 
@@ -170,7 +188,7 @@ module.exports = function(){
 	// 	cp.exec('amixer -q sset Master 5%-', cb);
 	// }
 	obj.system.sound_get=function(cb){
-		console.log('volume : ', _state.volume);
+		// console.log('volume : ', _state.volume);
 
 		cp.exec("pactl list sinks | grep  Volume: | awk '$1 ~ /Volume/ { print $5,$12 }'",cb);
 	}

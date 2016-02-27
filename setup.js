@@ -66,18 +66,18 @@ module.exports = function(){
 	}
 
 
-	obj.network.reset = function(){
+	obj.network.reset = function(cb){
 		var conf = fs.readFileSync(obj.path.NETWORK_CONFIG_FILE);
 		fs.writeFileSync(obj.path.NETWORK_CONFIG_FILE_CURRENT,conf);
 		// fs.linkSync(obj.path.NETWORK_CONFIG_FILE,obj.path.NETWORK_CONFIG_FILE_CURRENT);
-		obj.network.apply();
+		obj.network.apply(cb);
 		//TODO : Restar network ???
 	}
 	obj.network.setConfig = function(config,outFile){
 		//TODO : Validate
 		fs.writeFileSync(outFile || obj.path.NETWORK_CONFIG_FILE_CURRENT, JSON.stringify(config));
 	}
-	obj.network.apply = function(){
+	obj.network.apply = function(cb){
 		var config = JSON.parse(fs.readFileSync(obj.path.NETWORK_CONFIG_FILE_CURRENT));
 
 		//TODO : Validate
@@ -129,7 +129,7 @@ module.exports = function(){
 		}
 		fs.writeFileSync(obj.path.INTERFACES_FILE,output.join("\n"))
 		// return output.join("\n");
-		return config;
+		return cb(null,config) ;
 	}
 
 	obj.network.getConfig=function(cb){
